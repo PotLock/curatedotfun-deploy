@@ -1,0 +1,13 @@
+{{- range .Values.bots }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-configmap
+  labels:
+    app.kubernetes.io/name: {{ include "curatedotfun.name" $ }}-{{ .name }}-configmap
+    helm.sh/chart: {{ include "curatedotfun.chart" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+data:
+  botName: {{ .name | quote }}
+{{- end }}

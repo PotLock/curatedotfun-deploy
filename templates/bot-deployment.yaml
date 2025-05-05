@@ -1,0 +1,49 @@
+{{- range .Values.bots }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-bot
+  labels:
+    app.kubernetes.io/name: {{ include "curatedotfun.name" $ }}-{{ .name }}-bot
+    helm.sh/chart: {{ include "curatedotfun.chart" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: {{ $.Values.botDefaults.bot.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "curatedotfun.name" $ }}-{{ .name }}-bot
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "curatedotfun.name" $ }}-{{ .name }}-bot
+    spec:
+      containers:
+        - name: bot
+          image: "{{ $.Values.botDefaults.bot.image }}"
+          ports:
+            - containerPort: {{ $.Values.botDefaults.bot.servicePort }}
+          resources:
+            {{- toYaml $.Values.botDefaults.bot.resources | nindent 12 }}
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-secrets
+                  key: dbPassword
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-secrets
+                  key: encryptionKey
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-secrets
+                  key: postgresUser
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-secrets
+                  key: postgresDB
+{{- end }}

@@ -1,0 +1,21 @@
+
+yaml{{- range .Values.bots }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-postgres-service
+  labels:
+    app.kubernetes.io/name: {{ include "curatedotfun.name" $ }}-{{ .name }}-postgres
+    helm.sh/chart: {{ include "curatedotfun.chart" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+      name: postgres
+  selector:
+    app.kubernetes.io/name: {{ include "curatedotfun.name" $ }}-{{ .name }}-postgres
+{{- end }}

@@ -1,0 +1,51 @@
+bots:
+- name: bot1
+  domain: bot1.example.com
+  postgresUser: botuser1
+  postgresDB: botdb1
+  dbPassword: "changeme1" #  Pre-populated / managed by the Job
+  encryptionKey: "changeme1" # Pre-populated / managed by the Job
+- name: bot2
+  domain: bot2.example.com
+  postgresUser: botuser2
+  postgresDB: botdb2
+  dbPassword: "changeme2" #  Pre-populated / managed by the Job
+  encryptionKey: "changeme2" # Pre-populated / managed by the Job
+
+botDefaults:
+  # Values that will be applied to bots unless otherwise specified
+  bot:
+    image: your-registry/bot-image:latest
+    replicaCount: 1
+    servicePort: 8080
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+  scheduler:
+    image: your-registry/scheduler-image:latest
+    replicaCount: 1
+    servicePort: 8081
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 300m
+        memory: 512Mi
+
+  rss:
+    image: your-registry/rss-image:latest
+    replicaCount: 1
+    servicePort: 8082
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 300m
+        memory: 512Mi

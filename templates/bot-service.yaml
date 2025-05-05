@@ -1,0 +1,20 @@
+{{- range .Values.bots }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-bot-service
+  labels:
+    app.kubernetes.io/name: {{ include "curatedotfun.name" $ }}-{{ .name }}-bot
+    helm.sh/chart: {{ include "curatedotfun.chart" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ $.Values.botDefaults.bot.servicePort }}
+      targetPort: {{ $.Values.botDefaults.bot.servicePort }}
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "curatedotfun.name" $ }}-{{ .name }}-bot
+{{- end }}
