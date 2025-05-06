@@ -47,4 +47,9 @@ spec:
                 secretKeyRef:
                   name: {{ include "curatedotfun.fullname" $ }}-{{ .name }}-secrets
                   key: postgresDB
+            - name: POSTGRES_HOST
+              value: '{{ include "curatedotfun.fullname" $ }}-{{ .name }}-postgres-service'
+          command: [ "sh", "-c" ]
+          args:
+            - export DATABASE_URL="postgresql://$POSTGRES_USER:$DB_PASSWORD@$POSTGRES_HOST:5432/$POSTGRES_DB" && exec pnpm run --dir backend start  
 {{- end }}
