@@ -1,5 +1,4 @@
-
-yaml{{- range .Values.bots }}
+{{- range .Values.bots }}
 apiVersion: v1
 kind: Service
 metadata:

@@ -5,12 +5,16 @@ bots:
   postgresDB: botdb1
   dbPassword: "changeme1" #  Pre-populated / managed by the Job
   encryptionKey: "changeme1" # Pre-populated / managed by the Job
+  ingress:
+    enabled: true
 - name: bot2
   domain: bot2.example.com
   postgresUser: botuser2
   postgresDB: botdb2
   dbPassword: "changeme2" #  Pre-populated / managed by the Job
   encryptionKey: "changeme2" # Pre-populated / managed by the Job
+  ingress:
+    enabled: true
 
 botDefaults:
   # Values that will be applied to bots unless otherwise specified
@@ -49,3 +53,6 @@ botDefaults:
       limits:
         cpu: 300m
         memory: 512Mi
+
+postgres:
+  image: postgres:13.3
