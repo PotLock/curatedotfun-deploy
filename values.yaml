@@ -19,7 +19,8 @@ bots:
 botDefaults:
   # Values that will be applied to bots unless otherwise specified
   bot:
-    image: your-registry/bot-image:latest
+
+    image: ghcr.io/elliotbraem/efizzybot:fe498dcbfed9692a2eaae900c3da066596e6af97
     replicaCount: 1
     servicePort: 8080
     resources:
